@@ -16,21 +16,25 @@ class TaskRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   private val tasks = TableQuery[TaskTable]
 
-  // Fetch all tasks
   def listTasks(): Future[Seq[Task]] = db.run(tasks.result)
 
-  // Add a new task
   def addTask(task: Task): Future[Long] = {
     val insertQueryThenReturnId = tasks returning tasks.map(_.id)
     db.run(insertQueryThenReturnId += task)
   }
 
-  // Get tasks by event ID
+  def getTaskById(taskId: Long): Future[Option[Task]] = {
+    db.run(tasks.filter(_.id === taskId).result.headOption)
+  }
+
   def getTasksByEventId(eventId: Long): Future[Seq[Task]] = {
     db.run(tasks.filter(_.eventId === eventId).result)
   }
 
-  // Update a task by ID
+  def getTasksByTeamId(teamId: Long): Future[Seq[Task]] = {
+    db.run(tasks.filter(_.teamId === teamId).result)
+  }
+
   def updateTask(taskId: Long, task: Task): Future[Option[Task]] = {
     val updateQuery = tasks.filter(_.id === taskId)
       .map(t => (t.taskName, t.description, t.assignedDate, t.dueDate, t.status))

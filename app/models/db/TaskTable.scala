@@ -12,6 +12,11 @@ class TaskTable(tag: Tag) extends Table[Task](tag, "tasks") {
   def assignedDate = column[String]("assigned_date")
   def dueDate = column[String]("due_date")
   def status = column[String]("status")
+  def totalTimeHours = column[Option[Double]]("total_time_hours") // New field
+  def remainingHours = column[Option[Double]]("remaining_hours")  // New field
+  def completedHours = column[Option[Double]]("completed_hours")  // New field
+  def blockers = column[Option[String]]("blockers")              // New field
 
-  def * = (id, eventId, teamId, taskName, description, assignedDate, dueDate, status) <> ((Task.apply _).tupled, Task.unapply)
+  def * = (id, eventId, teamId, taskName, description, assignedDate, dueDate, status, totalTimeHours, remainingHours, completedHours,
+    blockers) <> ((Task.apply _).tupled, Task.unapply)
 }

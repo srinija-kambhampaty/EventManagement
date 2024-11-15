@@ -2,16 +2,18 @@ package controllers
 
 import models.Task
 import play.api.mvc._
-import services.TaskService
+import services.{TaskService,AlertService}
 import play.api.libs.json._
-
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Singleton
 class TaskController @Inject()(
                                 val cc: ControllerComponents,
-                                taskService: TaskService
+                                taskService: TaskService,
+                                alertService: AlertService // Inject the new generalized alert service
                               )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   // GET /tasks - Fetch all tasks
@@ -19,11 +21,13 @@ class TaskController @Inject()(
     taskService.listTasks().map(tasks => Ok(Json.toJson(tasks)))
   }
 
-  // POST /tasks - Add a new task
+  // POST /tasks - Add a new task and send a Kafka message
   def addTask(): Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[Task] match {
       case JsSuccess(task, _) =>
-        taskService.addTask(task).map(created => Created(Json.toJson(created)))
+        taskService.addTask(task).map { createdTask =>
+          Ok(Json.toJson(createdTask))
+        }
       case JsError(errors) =>
         Future.successful(BadRequest(Json.obj(
           "message" -> "Invalid task data",
@@ -50,4 +54,29 @@ class TaskController @Inject()(
           "errors" -> JsError.toJson(errors))))
     }
   }
+
+  def sendPreparationReminders() = Action.async {
+    alertService.checkAndSendReminders().map { _ =>
+      Ok("Preparation reminders have been sent.")
+    }
+  }
+
+  def sendEventDayAlerts() = Action.async {
+    alertService.sendEventDayAlerts().map { _ =>
+      Ok("Event day alerts have been sent.")
+    }
+  }
+
+  def sendProgressCheckInAlerts() = Action.async {
+    alertService.sendProgressCheckInAlerts().map { _ =>
+      Ok("Progress check-in alerts have been sent.")
+    }
+  }
+
+  def sendIssueAlerts() = Action.async {
+    alertService.sendIssueAlerts().map { _ =>
+      Ok("Issue alerts have been sent.")
+    }
+  }
+
 }

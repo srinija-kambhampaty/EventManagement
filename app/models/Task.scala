@@ -10,7 +10,11 @@ case class Task(
                  description: String,
                  assignedDate: String,
                  dueDate: String,
-                 status: String
+                 status: String,
+                 totalTimeHours: Option[Double],
+                 remainingHours: Option[Double],
+                 completedHours: Option[Double],
+                 blockers: Option[String]
                )
 
 object Task {
