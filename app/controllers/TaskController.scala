@@ -55,28 +55,30 @@ class TaskController @Inject()(
     }
   }
 
-  def sendPreparationReminders() = Action.async {
-    alertService.checkAndSendReminders().map { _ =>
-      Ok("Preparation reminders have been sent.")
-    }
-  }
+  //functions for alerts apis
 
-  def sendEventDayAlerts() = Action.async {
-    alertService.sendEventDayAlerts().map { _ =>
-      Ok("Event day alerts have been sent.")
-    }
-  }
-
-  def sendProgressCheckInAlerts() = Action.async {
-    alertService.sendProgressCheckInAlerts().map { _ =>
-      Ok("Progress check-in alerts have been sent.")
-    }
-  }
-
-  def sendIssueAlerts() = Action.async {
-    alertService.sendIssueAlerts().map { _ =>
-      Ok("Issue alerts have been sent.")
-    }
-  }
+//  def sendPreparationReminders() = Action.async {
+//    alertService.checkAndSendReminders().map { _ =>
+//      Ok("Preparation reminders have been sent.")
+//    }
+//  }
+//
+//  def sendEventDayAlerts() = Action.async {
+//    alertService.sendEventDayAlerts().map { _ =>
+//      Ok("Event day alerts have been sent.")
+//    }
+//  }
+//
+//  def sendProgressCheckInAlerts() = Action.async {
+//    alertService.sendProgressCheckInAlerts().map { _ =>
+//      Ok("Progress check-in alerts have been sent.")
+//    }
+//  }
+//
+//  def sendIssueAlerts() = Action.async {
+//    alertService.sendIssueAlerts().map { _ =>
+//      Ok("Issue alerts have been sent.")
+//    }
+//  }
 
 }
