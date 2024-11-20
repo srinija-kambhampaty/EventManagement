@@ -15,11 +15,17 @@ class EventController @Inject()(
                                )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   // GET /events - Fetch all events
+//  def listEvents(): Action[AnyContent] = Action.async {
+//    eventService.listEvents().map(events => Ok(Json.toJson(events)))
+//  }
+
   def listEvents(): Action[AnyContent] = Action.async {
-    eventService.listEvents().map(events => Ok(Json.toJson(events)))
+    eventService.listEvents().map { events =>
+      Ok(views.html.eventList(events.toList))
+    }
   }
 
-  // POST /events - Add a new event
+
   def addEvent(): Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[Event] match {
       case JsSuccess(event, _) =>

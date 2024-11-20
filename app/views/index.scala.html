@@ -1,5 +1,21 @@
-@()
-
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@main("Event Management System") {
+  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+  <div class="content-wrapper">
+    <div class="left-pane">
+      <h1 class="heading">Event Management System</h1>
+    </div>
+    <div class="right-pane">
+      <div class="container">
+        <div class="box" onclick="window.location.href='/teams';">
+          <h2>Teams</h2>
+        </div>
+        <div class="box" onclick="window.location.href='/events';">
+          <h2>Events</h2>
+        </div>
+        <div class="box" onclick="window.location.href='/tasks';">
+          <h2>Tasks</h2>
+        </div>
+      </div>
+    </div>
+  </div>
 }

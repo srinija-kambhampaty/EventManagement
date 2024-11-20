@@ -1,0 +1,30 @@
+@(taskList: List[models.Task])
+
+@main("Task List Page") {
+  <div class="tasks-list">
+    @for(task <- taskList) {
+      <div class="task-box">
+        <h3>@task.taskName</h3>
+        <p><strong>Description:</strong> @task.description</p>
+        <p><strong>Assigned Date:</strong> @task.assignedDate</p>
+        <p><strong>Due Date:</strong> @task.dueDate</p>
+        <p><strong>Status:</strong> @task.status</p>
+        @if(task.totalTimeHours.isDefined) {
+          <p><strong>Total Time (Hours):</strong> @task.totalTimeHours.get</p>
+        }
+        @if(task.remainingHours.isDefined) {
+          <p><strong>Remaining Hours:</strong> @task.remainingHours.get</p>
+        }
+        @if(task.completedHours.isDefined) {
+          <p><strong>Completed Hours:</strong> @task.completedHours.get</p>
+        }
+        @if(task.blockers.isDefined) {
+          <p><strong>Blockers:</strong> @task.blockers.get</p>
+        }
+        <button class="update-task-button" onclick="window.location.href='/tasks/@task.id';">Update Task</button>
+      </div>
+    }
+      <!-- Add Button Centered Below All Tasks -->
+    <button class="add-button" onclick="window.location.href='/tasks';">Add Task</button>
+  </div>
+}

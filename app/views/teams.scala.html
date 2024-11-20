@@ -1,0 +1,15 @@
+@()(implicit teams: List[Map[String, String]])
+
+@main("Teams") {
+    <h1 class="heading">Teams</h1>
+    <div class="teams-container">
+    @for(team <- teams) {
+        <div class="team-card">
+            <h2>@team("name")</h2>
+            <p><strong>ID:</strong> @team("id")</p>
+            <p><strong>Team Lead Email:</strong> @team("teamLeadEmail")</p>
+        </div>
+    }
+    </div>
+}
+    l>

@@ -19,7 +19,6 @@ class IssueAlertProducer @Inject()() {
   def sendIssueAlert(task: Task): Unit = {
     val alertMessage = Json.stringify(Json.toJson(task))
     val topic = "issue_alerts"
-
     val record = new ProducerRecord[String, String](topic, "issue-alert", alertMessage)
     producer.send(record)
   }

@@ -1,0 +1,18 @@
+@(eventList: List[models.Event])
+
+@main("Event List Page") {
+    <div class="tasks-list">
+        @for(event <- eventList) {
+            <div class="task-box">
+                <h3>@event.name</h3>
+                <p><strong>Location:</strong> @event.location</p>
+                <p><strong>Number of Guests:</strong> @event.noOfGuests</p>
+                <p><strong>Requirements:</strong> @event.requirements</p>
+                <p><strong>Event Date:</strong> @event.eventDate</p>
+                <button class="update-task-button" onclick="window.location.href='/events/@event.id/tasks';">Event Tasks</button>
+            </div>
+        }
+            <!-- Add Button Centered Below All Events -->
+        <button class="add-button" onclick="window.location.href='/events';">Add Event</button>
+    </div>
+}

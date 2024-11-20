@@ -18,6 +18,6 @@ case class Task(
                )
 
 object Task {
-  implicit val taskFormat: Format[Task] = Json.format[Task]
+  implicit val taskFormat: OFormat[Task] = Json.format[Task]
 }
 

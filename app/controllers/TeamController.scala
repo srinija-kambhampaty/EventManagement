@@ -16,8 +16,14 @@ class TeamController @Inject()(
                               )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   // GET /teams - Fetch all teams
+//  def listTeams(): Action[AnyContent] = Action.async {
+//    teamService.listTeams().map(teams => Ok(Json.toJson(teams)))
+//  }
+
   def listTeams(): Action[AnyContent] = Action.async {
-    teamService.listTeams().map(teams => Ok(Json.toJson(teams)))
+    teamService.listTeams().map { teams =>
+      Ok(views.html.teamList(teams.toList))
+    }
   }
 
   // POST /teams - Add a new team
@@ -34,6 +40,6 @@ class TeamController @Inject()(
 
   // GET /teams/:id/tasks - Fetch tasks by team ID
   def getTasksByTeamId(teamId: Long): Action[AnyContent] = Action.async {
-    taskService.getTasksByTeamId(teamId).map(tasks => Ok(Json.toJson(tasks)))
+    taskService.getTasksByTeamId(teamId).map(tasks => Ok(views.html.tasksList(tasks.toList)))
   }
 }

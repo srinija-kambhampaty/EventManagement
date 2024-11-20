@@ -6,19 +6,25 @@ import services.{TaskService,AlertService}
 import play.api.libs.json._
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 
 @Singleton
 class TaskController @Inject()(
                                 val cc: ControllerComponents,
                                 taskService: TaskService,
-                                alertService: AlertService // Inject the new generalized alert service
+                                alertService: AlertService
                               )(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   // GET /tasks - Fetch all tasks
+//  def listTasks(): Action[AnyContent] = Action.async {
+//    taskService.listTasks().map(tasks => Ok(Json.toJson(tasks)))
+//  }
+
+
   def listTasks(): Action[AnyContent] = Action.async {
-    taskService.listTasks().map(tasks => Ok(Json.toJson(tasks)))
+    taskService.listTasks().map { tasks =>
+      Ok(views.html.tasksList(tasks.toList))
+    }
   }
 
   // POST /tasks - Add a new task and send a Kafka message
@@ -37,7 +43,7 @@ class TaskController @Inject()(
 
   // GET /events/:eventId/tasks - Fetch tasks by event ID
   def getTasksByEventId(eventId: Long): Action[AnyContent] = Action.async {
-    taskService.getTasksByEventId(eventId).map(tasks => Ok(Json.toJson(tasks)))
+    taskService.getTasksByEventId(eventId).map(tasks => Ok(views.html.tasksList(tasks.toList)))
   }
 
   // PUT /tasks/:taskId - Update a specific task
@@ -55,30 +61,31 @@ class TaskController @Inject()(
     }
   }
 
-  //functions for alerts apis
+  //functions to test alerts instead of scheduler
+/*
+  def sendPreparationReminders() = Action.async {
+    alertService.checkAndSendReminders().map { _ =>
+      Ok("Preparation reminders have been sent.")
+    }
+  }
 
-//  def sendPreparationReminders() = Action.async {
-//    alertService.checkAndSendReminders().map { _ =>
-//      Ok("Preparation reminders have been sent.")
-//    }
-//  }
-//
-//  def sendEventDayAlerts() = Action.async {
-//    alertService.sendEventDayAlerts().map { _ =>
-//      Ok("Event day alerts have been sent.")
-//    }
-//  }
-//
-//  def sendProgressCheckInAlerts() = Action.async {
-//    alertService.sendProgressCheckInAlerts().map { _ =>
-//      Ok("Progress check-in alerts have been sent.")
-//    }
-//  }
-//
-//  def sendIssueAlerts() = Action.async {
-//    alertService.sendIssueAlerts().map { _ =>
-//      Ok("Issue alerts have been sent.")
-//    }
-//  }
+  def sendEventDayAlerts() = Action.async {
+    alertService.sendEventDayAlerts().map { _ =>
+      Ok("Event day alerts have been sent.")
+    }
+  }
+
+  def sendProgressCheckInAlerts() = Action.async {
+    alertService.sendProgressCheckInAlerts().map { _ =>
+      Ok("Progress check-in alerts have been sent.")
+    }
+  }
+
+  def sendIssueAlerts() = Action.async {
+    alertService.sendIssueAlerts().map { _ =>
+      Ok("Issue alerts have been sent.")
+    }
+  }
+ */
 
 }

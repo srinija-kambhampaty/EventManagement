@@ -1,0 +1,15 @@
+@(teamList: List[models.Team])
+
+@main("Team List Page") {
+  <div class="tasks-list">
+    @for(team <- teamList) {
+      <div class="task-box">
+        <h3>@team.name</h3>
+        <p><strong>Team Lead Email:</strong> @team.teamLeadEmail</p>
+        <button class="update-task-button" onclick="window.location.href='/teams/@team.id/tasks';">Team tasks</button>
+      </div>
+    }
+      <!-- Add Button Centered Below All Teams -->
+    <button class="add-button" onclick="window.location.href='/teams';">Add Team</button>
+  </div>
+}
