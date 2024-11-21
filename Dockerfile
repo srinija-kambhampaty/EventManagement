@@ -22,8 +22,11 @@ WORKDIR /app
 # Make port 9000 available to the world outside this container
 EXPOSE 9000
 
-ENV PASSWORD_DB = Password@12345
+ENV PASSWORD_DB=Password@12345
 
 
+# Define environment variable
+ENV PLAY_HTTP_SECRET=thisisasecretfortheapplicationandwekeepittosecuretheapplicationletuscheckandithastowork
 
-
+# Run the binary script when the container launches
+CMD ["./bin/eventmanagement", "-Dplay.http.secret.key=qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmaadjvnadivnasvadsbvsoadbvoadshbpibiuasdvudhasvuhdasiuhvuvhadsuhaxhicshvuzxhvuixchvuzixhpc"]
